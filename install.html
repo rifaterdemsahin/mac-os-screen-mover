@@ -321,15 +321,18 @@
         <span class="tag tag-green">~2 min setup &bull; No SIP disable</span>
       </div>
       <ol>
-        <li><strong>Clone this repo and install Hammerspoon</strong> via Homebrew (or download it from <a href="https://www.hammerspoon.org/" target="_blank" rel="noopener">hammerspoon.org</a>):</li>
+        <li><strong>Install Hammerspoon</strong> via Homebrew (or download it from <a href="https://www.hammerspoon.org/" target="_blank" rel="noopener">hammerspoon.org</a>) and download <code>init.lua</code> directly from any directory:</li>
       </ol>
       <div class="code-wrap">
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
 <pre>brew install --cask hammerspoon
-git clone https://github.com/rifaterdemsahin/mac-os-screen-mover.git
 mkdir -p ~/.hammerspoon
-cp mac-os-screen-mover/options/hammerspoon/init.lua ~/.hammerspoon/init.lua</pre>
+curl -fsSL https://raw.githubusercontent.com/rifaterdemsahin/mac-os-screen-mover/main/options/hammerspoon/init.lua -o ~/.hammerspoon/init.lua</pre>
       </div>
+      <p style="color: var(--muted); font-size: 0.92rem;">
+        Or, if you prefer cloning the repository first:
+        <code>git clone https://github.com/rifaterdemsahin/mac-os-screen-mover.git &amp;&amp; cp mac-os-screen-mover/options/hammerspoon/init.lua ~/.hammerspoon/init.lua</code>
+      </p>
       <ol start="2">
         <li><strong>Launch Hammerspoon</strong> from Applications or Spotlight.</li>
         <li><strong>Enable Accessibility:</strong> Open <em>System Settings &rarr; Privacy &amp; Security &rarr; Accessibility</em> and toggle <strong>Hammerspoon</strong> on.</li>
@@ -425,6 +428,10 @@ swiftc -O options/swift-native/MoveWindowToSpace.swift -o /usr/local/bin/move-wi
     </div>
 
     <h2>4. Troubleshooting</h2>
+    <div class="callout warn">
+      <strong><code>cp: options/hammerspoon/init.lua: No such file or directory</code></strong>
+      This happens when you run <code>cp options/hammerspoon/init.lua ...</code> from a different directory (for example, your home or another project folder) instead of inside the cloned <code>mac-os-screen-mover</code> repo. Either <code>cd mac-os-screen-mover</code> first, or run the <code>curl</code> command above which works from any directory.
+    </div>
     <div class="callout warn">
       <strong>Nothing happens when pressing Cmd+1 or Cmd+2</strong>
       Make sure Hammerspoon, <code>skhd</code>, or your terminal/launcher app is enabled in <em>System Settings &rarr; Privacy &amp; Security &rarr; Accessibility</em>. If you recently updated macOS or the app, toggle the checkbox off and back on.
