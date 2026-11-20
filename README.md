@@ -2,7 +2,9 @@
 
 🚀 Move the active macOS window to **Desktop 1** with `⌘ Cmd + 1` or **Desktop 2** with `⌘ Cmd + 2`.
 
-🌐 **Live Guide & Documentation (GitHub Pages):** [https://rifaterdemsahin.github.io/mac-os-screen-mover/](https://rifaterdemsahin.github.io/mac-os-screen-mover/)
+🌐 **Live Guide & Documentation (GitHub Pages):**
+- 📖 [Overview & Options Comparison](https://rifaterdemsahin.github.io/mac-os-screen-mover/)
+- 📦 [Install & How to Use Guide](https://rifaterdemsahin.github.io/mac-os-screen-mover/install.html)
 
 ## 🛠️ Implementation Options
 

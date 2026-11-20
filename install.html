@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Install &amp; How to Use — macOS Screen Mover</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface-2: #1f2630;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-soft: rgba(88, 166, 255, 0.14);
+      --green: #3fb950;
+      --green-soft: rgba(63, 185, 80, 0.15);
+      --amber: #d29922;
+      --amber-soft: rgba(210, 153, 34, 0.15);
+      --red: #f85149;
+      --code-bg: #0b0f14;
+      --radius: 12px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 28px 20px 80px;
+    }
+
+    .topnav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 20px;
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .nav-link {
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--muted);
+      border: 1px solid transparent;
+      text-decoration: none;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+      background: var(--surface);
+      text-decoration: none;
+    }
+
+    .nav-link.active {
+      color: var(--accent);
+      background: var(--accent-soft);
+      border-color: rgba(88, 166, 255, 0.35);
+    }
+
+    header {
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: var(--green-soft);
+      color: var(--green);
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      line-height: 1.2;
+      margin: 0 0 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.06rem;
+      margin: 0;
+      max-width: 740px;
+    }
+
+    h2 {
+      font-size: 1.45rem;
+      margin: 44px 0 16px;
+      letter-spacing: -0.01em;
+    }
+
+    h3 {
+      font-size: 1.12rem;
+      margin: 0 0 8px;
+    }
+
+    p { margin: 0 0 14px; }
+
+    kbd {
+      display: inline-block;
+      padding: 2px 8px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-bottom-width: 2px;
+      border-radius: 6px;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.88em;
+      background: var(--surface-2);
+      padding: 2px 6px;
+      border-radius: 5px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .card-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .tag-green { background: var(--green-soft); color: var(--green); }
+    .tag-amber { background: var(--amber-soft); color: var(--amber); }
+
+    .callout {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin: 24px 0;
+    }
+
+    .callout.warn {
+      border-left-color: var(--amber);
+    }
+
+    .callout strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin: 16px 0 28px;
+    }
+
+    .mini-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+    }
+
+    .code-wrap {
+      position: relative;
+      margin: 12px 0 18px;
+    }
+
+    pre {
+      margin: 0;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.86rem;
+      line-height: 1.55;
+      color: #d2dbe5;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-family: var(--font-sans);
+    }
+
+    .copy-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    ol, ul {
+      margin: 8px 0 16px;
+      padding-left: 22px;
+    }
+
+    li { margin-bottom: 8px; }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    footer {
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.9rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="topnav" aria-label="Primary">
+      <a class="brand" href="index.html">macOS Screen Mover</a>
+      <div class="nav-links">
+        <a class="nav-link" href="index.html">Overview</a>
+        <a class="nav-link active" href="install.html">Install &amp; How to Use</a>
+        <a class="nav-link" href="https://github.com/rifaterdemsahin/mac-os-screen-mover" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </nav>
+
+    <header>
+      <div class="badge">Step-by-Step Setup Guide</div>
+      <h1>Install &amp; How to Use</h1>
+      <p class="subtitle">
+        Get up and running in a couple of minutes. Pick one of the three installation methods below—Hammerspoon is recommended for most macOS users because it requires no System Integrity Protection (SIP) changes.
+      </p>
+    </header>
+
+    <h2>1. Prerequisites</h2>
+    <div class="grid-2">
+      <div class="mini-card">
+        <h3>Create at least 2 Desktops</h3>
+        <p style="margin-bottom:0; color: var(--muted);">
+          Open Mission Control (<kbd>Ctrl</kbd> + <kbd>&uarr;</kbd> or three-finger swipe up) and click the <strong>+</strong> button in the top-right corner so both <strong>Desktop 1</strong> and <strong>Desktop 2</strong> exist.
+        </p>
+      </div>
+      <div class="mini-card">
+        <h3>Grant Accessibility Access</h3>
+        <p style="margin-bottom:0; color: var(--muted);">
+          macOS requires Accessibility permission to inspect or move windows. You will enable this under <em>System Settings &rarr; Privacy &amp; Security &rarr; Accessibility</em>.
+        </p>
+      </div>
+    </div>
+
+    <h2>2. Choose Your Installation Method</h2>
+
+    <!-- METHOD 1: HAMMERSPOON -->
+    <section class="card" id="install-hammerspoon">
+      <div class="card-header">
+        <h3>Option 1: Hammerspoon (Recommended)</h3>
+        <span class="tag tag-green">~2 min setup &bull; No SIP disable</span>
+      </div>
+      <ol>
+        <li><strong>Clone this repo and install Hammerspoon</strong> via Homebrew (or download it from <a href="https://www.hammerspoon.org/" target="_blank" rel="noopener">hammerspoon.org</a>):</li>
+      </ol>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre>brew install --cask hammerspoon
+git clone https://github.com/rifaterdemsahin/mac-os-screen-mover.git
+mkdir -p ~/.hammerspoon
+cp mac-os-screen-mover/options/hammerspoon/init.lua ~/.hammerspoon/init.lua</pre>
+      </div>
+      <ol start="2">
+        <li><strong>Launch Hammerspoon</strong> from Applications or Spotlight.</li>
+        <li><strong>Enable Accessibility:</strong> Open <em>System Settings &rarr; Privacy &amp; Security &rarr; Accessibility</em> and toggle <strong>Hammerspoon</strong> on.</li>
+        <li><strong>Reload Config:</strong> Click the Hammerspoon icon in the macOS menu bar and select <strong>Reload Config</strong>.</li>
+      </ol>
+      <div class="callout">
+        <strong>Already have a <code>~/.hammerspoon/init.lua</code>?</strong>
+        Instead of overwriting with <code>cp</code>, append the contents of <a href="options/hammerspoon/init.lua"><code>options/hammerspoon/init.lua</code></a> to your existing <code>init.lua</code> file.
+      </div>
+    </section>
+
+    <!-- METHOD 2: YABAI + SKHD -->
+    <section class="card" id="install-yabai">
+      <div class="card-header">
+        <h3>Option 2: yabai + skhd</h3>
+        <span class="tag tag-amber">Requires Partial SIP Disable</span>
+      </div>
+      <ol>
+        <li><strong>Install yabai and skhd</strong> with Homebrew:</li>
+      </ol>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre>brew install koekeishiya/formulae/yabai koekeishiya/formulae/skhd</pre>
+      </div>
+      <ol start="2">
+        <li><strong>Configure partial SIP</strong> following <a href="https://github.com/koekeishiya/yabai/wiki/Disabling-System-Integrity-Protection" target="_blank" rel="noopener">yabai's official SIP guide</a>, then load the scripting addition:</li>
+      </ol>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre>sudo yabai --load-sa</pre>
+      </div>
+      <ol start="3">
+        <li><strong>Copy the hotkey config and start both services:</strong></li>
+      </ol>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre>git clone https://github.com/rifaterdemsahin/mac-os-screen-mover.git
+mkdir -p ~/.config/skhd
+cp mac-os-screen-mover/options/yabai-skhd/skhdrc ~/.config/skhd/skhdrc
+yabai --start-service &amp;&amp; skhd --start-service</pre>
+      </div>
+    </section>
+
+    <!-- METHOD 3: SWIFT CLI -->
+    <section class="card" id="install-swift">
+      <div class="card-header">
+        <h3>Option 3: Native Swift CLI</h3>
+        <span class="tag tag-green">No SIP disable &bull; Zero WM dependencies</span>
+      </div>
+      <ol>
+        <li><strong>Enable Mission Control shortcuts:</strong> Go to <em>System Settings &rarr; Keyboard &rarr; Keyboard Shortcuts &rarr; Mission Control</em> and enable <strong>Switch to Desktop 1</strong> (<kbd>Ctrl</kbd>+<kbd>1</kbd>) and <strong>Switch to Desktop 2</strong> (<kbd>Ctrl</kbd>+<kbd>2</kbd>).</li>
+        <li><strong>Compile and install the binary:</strong></li>
+      </ol>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre>git clone https://github.com/rifaterdemsahin/mac-os-screen-mover.git
+cd mac-os-screen-mover
+swiftc -O options/swift-native/MoveWindowToSpace.swift -o /usr/local/bin/move-window-to-space</pre>
+      </div>
+      <ol start="3">
+        <li><strong>Test from Terminal</strong> (grant Accessibility permission when prompted):</li>
+      </ol>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre>move-window-to-space 2</pre>
+      </div>
+      <ol start="4">
+        <li><strong>Bind hotkeys:</strong> Use Raycast, macOS Shortcuts, or <code>skhd</code> to run <code>move-window-to-space 1</code> on <kbd>Cmd</kbd>+<kbd>1</kbd> and <code>move-window-to-space 2</code> on <kbd>Cmd</kbd>+<kbd>2</kbd>.</li>
+      </ol>
+    </section>
+
+    <h2>3. How to Use</h2>
+    <div class="card">
+      <ol>
+        <li>Click any application window so it is the <strong>active (focused) window</strong>.</li>
+        <li>Press <kbd>⌘ Cmd</kbd> + <kbd>1</kbd> to send it to <strong>Desktop 1</strong>, or <kbd>⌘ Cmd</kbd> + <kbd>2</kbd> to send it to <strong>Desktop 2</strong>.</li>
+        <li>By default, your focus follows the window to the target desktop.</li>
+      </ol>
+
+      <h3 style="margin-top: 20px;">Common Customizations</h3>
+      <ul>
+        <li><strong>Move silently without switching desktops:</strong>
+          In <code>~/.hammerspoon/init.lua</code>, change <code>local FOLLOW_WINDOW = true</code> to <code>false</code>.
+          In <code>~/.config/skhd/skhdrc</code>, remove <code>&amp;&amp; yabai -m space --focus 1</code>.
+        </li>
+        <li><strong>Keep browser tab shortcuts (<kbd>Cmd</kbd>+<kbd>1</kbd> / <kbd>2</kbd>):</strong>
+          Change <code>{"cmd"}</code> to <code>{"ctrl", "alt"}</code> in <code>init.lua</code>, or change <code>cmd - 1</code> to <code>ctrl + alt - 1</code> in <code>skhdrc</code>.
+        </li>
+        <li><strong>Add Desktop 3 or 4:</strong>
+          Duplicate the <code>hotkey.bind</code> lines in <code>init.lua</code> with <code>3</code> / <code>4</code>, or pass <code>3</code>..<code>9</code> to <code>move-window-to-space</code>.
+        </li>
+      </ul>
+    </div>
+
+    <h2>4. Troubleshooting</h2>
+    <div class="callout warn">
+      <strong>Nothing happens when pressing Cmd+1 or Cmd+2</strong>
+      Make sure Hammerspoon, <code>skhd</code>, or your terminal/launcher app is enabled in <em>System Settings &rarr; Privacy &amp; Security &rarr; Accessibility</em>. If you recently updated macOS or the app, toggle the checkbox off and back on.
+    </div>
+    <div class="callout">
+      <strong>"Desktop 2 does not exist on this display"</strong>
+      Open Mission Control (<kbd>Ctrl</kbd> + <kbd>&uarr;</kbd>) and add a second Desktop on the display where the active window is located.
+    </div>
+
+    <footer>
+      <span>Repository: <a href="https://github.com/rifaterdemsahin/mac-os-screen-mover" target="_blank" rel="noopener">rifaterdemsahin/mac-os-screen-mover</a></span>
+      <span><a href="index.html">&larr; Back to Overview</a></span>
+    </footer>
+  </div>
+
+  <script>
+    function copyCode(button) {
+      const pre = button.parentElement.querySelector('pre');
+      navigator.clipboard.writeText(pre.textContent).then(() => {
+        const original = button.textContent;
+        button.textContent = 'Copied!';
+        setTimeout(() => { button.textContent = original; }, 1500);
+      });
+    }
+  </script>
+</body>
+</html>

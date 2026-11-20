@@ -39,7 +39,53 @@
     .container {
       max-width: 960px;
       margin: 0 auto;
-      padding: 48px 20px 80px;
+      padding: 28px 20px 80px;
+    }
+
+    .topnav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 20px;
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .nav-link {
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--muted);
+      border: 1px solid transparent;
+      text-decoration: none;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+      background: var(--surface);
+      text-decoration: none;
+    }
+
+    .nav-link.active {
+      color: var(--accent);
+      background: var(--accent-soft);
+      border-color: rgba(88, 166, 255, 0.35);
     }
 
     header {
@@ -256,6 +302,14 @@
 </head>
 <body>
   <div class="container">
+    <nav class="topnav" aria-label="Primary">
+      <a class="brand" href="index.html">macOS Screen Mover</a>
+      <div class="nav-links">
+        <a class="nav-link active" href="index.html">Overview</a>
+        <a class="nav-link" href="install.html">Install &amp; How to Use</a>
+        <a class="nav-link" href="https://github.com/rifaterdemsahin/mac-os-screen-mover" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </nav>
     <header>
       <div class="badge">macOS Mission Control Automation</div>
       <h1>Move Active Window to Virtual Desktop 1 or 2</h1>
