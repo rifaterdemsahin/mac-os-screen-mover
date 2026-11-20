@@ -281,9 +281,16 @@ curl -fsSL https://raw.githubusercontent.com/rifaterdemsahin/mac-os-screen-mover
         <code>git clone https://github.com/rifaterdemsahin/mac-os-screen-mover.git &amp;&amp; cp mac-os-screen-mover/options/hammerspoon/init.lua ~/.hammerspoon/init.lua</code>
       </p>
       <ol start="2">
-        <li><strong>Launch Hammerspoon</strong> from Applications or Spotlight.</li>
+        <li><strong>Verify the file &amp; launch Hammerspoon</strong> (from Terminal or Spotlight):</li>
+      </ol>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre>head -n 5 ~/.hammerspoon/init.lua
+open -a Hammerspoon</pre>
+      </div>
+      <ol start="3">
         <li><strong>Enable Accessibility:</strong> Open <em>System Settings &rarr; Privacy &amp; Security &rarr; Accessibility</em> and toggle <strong>Hammerspoon</strong> on.</li>
-        <li><strong>Reload Config:</strong> Click the Hammerspoon icon in the macOS menu bar and select <strong>Reload Config</strong>.</li>
+        <li><strong>Reload Config:</strong> Click the Hammerspoon icon in the macOS menu bar and select <strong>Reload Config</strong> (or run <code>hs -c "hs.reload()"</code>).</li>
       </ol>
       <div class="callout">
         <strong>Already have a <code>~/.hammerspoon/init.lua</code>?</strong>
@@ -375,6 +382,10 @@ swiftc -O options/swift-native/MoveWindowToSpace.swift -o /usr/local/bin/move-wi
     </div>
 
     <h2>4. Troubleshooting</h2>
+    <div class="callout">
+      <strong><code>Can't locate local/lib.pm in @INC</code> in Terminal</strong>
+      If you see a Perl error referencing <code>perl5/site_perl/5.44</code> when opening your shell, it comes from an older <code>local::lib</code> line in your <code>~/.zshrc</code> / <code>~/.bashrc</code> after a Homebrew Perl upgrade. It is unrelated to Hammerspoon or this project—<code>brew</code> and <code>curl</code> still work normally. To silence it, remove or update the <code>local::lib</code> eval line in your shell profile.
+    </div>
     <div class="callout warn">
       <strong><code>cp: options/hammerspoon/init.lua: No such file or directory</code></strong>
       This happens when you run <code>cp options/hammerspoon/init.lua ...</code> from a different directory (for example, your home or another project folder) instead of inside the cloned <code>mac-os-screen-mover</code> repo. Either <code>cd mac-os-screen-mover</code> first, or run the <code>curl</code> command above which works from any directory.
