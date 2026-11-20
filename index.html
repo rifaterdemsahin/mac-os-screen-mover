@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>macOS Screen Mover — Cmd+1 &amp; Cmd+2 Window-to-Desktop Guide</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface-2: #1f2630;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-soft: rgba(88, 166, 255, 0.14);
+      --green: #3fb950;
+      --green-soft: rgba(63, 185, 80, 0.15);
+      --amber: #d29922;
+      --amber-soft: rgba(210, 153, 34, 0.15);
+      --red: #f85149;
+      --code-bg: #0b0f14;
+      --radius: 12px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 20px 80px;
+    }
+
+    header {
+      margin-bottom: 40px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: var(--accent-soft);
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: clamp(1.9rem, 4vw, 2.6rem);
+      line-height: 1.2;
+      margin: 0 0 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.08rem;
+      margin: 0 0 20px;
+      max-width: 720px;
+    }
+
+    .hotkey-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .hotkey-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 0.95rem;
+    }
+
+    kbd {
+      display: inline-block;
+      padding: 2px 8px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-bottom-width: 2px;
+      border-radius: 6px;
+    }
+
+    h2 {
+      font-size: 1.45rem;
+      margin: 44px 0 16px;
+      letter-spacing: -0.01em;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      margin: 0 0 8px;
+    }
+
+    p { margin: 0 0 14px; }
+
+    .callout {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--amber);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin: 24px 0;
+    }
+
+    .callout.info {
+      border-left-color: var(--accent);
+    }
+
+    .callout strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin: 20px 0 36px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    th {
+      background: var(--surface-2);
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .tag-green { background: var(--green-soft); color: var(--green); }
+    .tag-amber { background: var(--amber-soft); color: var(--amber); }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .card-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .code-wrap {
+      position: relative;
+      margin: 14px 0;
+    }
+
+    pre {
+      margin: 0;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.86rem;
+      line-height: 1.55;
+      color: #d2dbe5;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      font-family: var(--font-sans);
+    }
+
+    .copy-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    ol, ul {
+      margin: 8px 0 16px;
+      padding-left: 22px;
+    }
+
+    li { margin-bottom: 6px; }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    footer {
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.9rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="badge">macOS Mission Control Automation</div>
+      <h1>Move Active Window to Virtual Desktop 1 or 2</h1>
+      <p class="subtitle">
+        macOS does not provide a built-in keyboard shortcut or public Apple API to send the focused window directly to a numbered Space. Here are your best options to bind <kbd>⌘ Cmd</kbd> + <kbd>1</kbd> and <kbd>⌘ Cmd</kbd> + <kbd>2</kbd> to move the active window to Desktop 1 or Desktop 2.
+      </p>
+      <div class="hotkey-row">
+        <div class="hotkey-pill"><kbd>⌘</kbd> + <kbd>1</kbd> &rarr; Move active window to <strong>Desktop 1</strong></div>
+        <div class="hotkey-pill"><kbd>⌘</kbd> + <kbd>2</kbd> &rarr; Move active window to <strong>Desktop 2</strong></div>
+      </div>
+    </header>
+
+    <div class="callout">
+      <strong>Important Hotkey Caveat</strong>
+      Global <kbd>⌘</kbd>+<kbd>1</kbd> and <kbd>⌘</kbd>+<kbd>2</kbd> will override built-in app shortcuts (such as switching to Tab 1 / Tab 2 in Chrome/Safari or changing Finder view modes). If you want to keep those app shortcuts intact, swap <code>cmd</code> for <code>ctrl + alt</code> or <code>cmd + shift</code> in any of the configs below.
+    </div>
+
+    <h2>Comparison of Implementation Options</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Option</th>
+            <th>SIP Disable Required?</th>
+            <th>Speed &amp; Reliability</th>
+            <th>Best For</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Hammerspoon (Lua)</strong></td>
+            <td><span class="tag tag-green">No</span></td>
+            <td>Fast, uses <code>hs.spaces</code></td>
+            <td>Most users &mdash; clean, free, scriptable, no SIP changes</td>
+          </tr>
+          <tr>
+            <td><strong>2. yabai + skhd</strong></td>
+            <td><span class="tag tag-amber">Partial SIP Disable</span></td>
+            <td>Instant &amp; native-feeling</td>
+            <td>Power users who want a full tiling window manager</td>
+          </tr>
+          <tr>
+            <td><strong>3. Native Swift CLI</strong></td>
+            <td><span class="tag tag-green">No</span></td>
+            <td>Good (simulates titlebar drag + <code>Ctrl+1/2</code>)</td>
+            <td>Minimalists who want zero third-party window managers</td>
+          </tr>
+          <tr>
+            <td><strong>4. BetterTouchTool (GUI)</strong></td>
+            <td><span class="tag tag-green">No</span></td>
+            <td>Instant</td>
+            <td>Users who prefer a paid GUI app with no config files</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- OPTION 1 -->
+    <section class="card" id="hammerspoon">
+      <div class="card-header">
+        <h3>Option 1: Hammerspoon (Recommended)</h3>
+        <span class="tag tag-green">No SIP Disable &bull; Free &amp; Open Source</span>
+      </div>
+      <p>
+        <a href="https://www.hammerspoon.org/" target="_blank" rel="noopener">Hammerspoon</a> is a lightweight macOS automation tool. Its <code>hs.spaces</code> module can move the focused window directly to Space 1 or Space 2 without disabling System Integrity Protection.
+      </p>
+      <ol>
+        <li>Install Hammerspoon: <code>brew install --cask hammerspoon</code></li>
+        <li>Open Hammerspoon and grant <strong>Accessibility</strong> permission in <em>System Settings &rarr; Privacy &amp; Security &rarr; Accessibility</em>.</li>
+        <li>Save the script below to <code>~/.hammerspoon/init.lua</code> (also in <a href="options/hammerspoon/init.lua"><code>options/hammerspoon/init.lua</code></a>) and click <strong>Reload Config</strong>.</li>
+      </ol>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre>-- ~/.hammerspoon/init.lua
+local spaces = require("hs.spaces")
+local window = require("hs.window")
+local hotkey = require("hs.hotkey")
+local alert  = require("hs.alert")
+
+-- Set to true to follow the window to the target desktop; false to stay put
+local FOLLOW_WINDOW = true
+
+local function moveFocusedWindowToSpace(spaceIndex)
+    local win = window.focusedWindow()
+    if not win then
+        alert.show("No active window found")
+        return
+    end
+
+    local screen = win:screen()
+    local screenSpaces = spaces.spacesForScreen(screen)
+    if not screenSpaces or #screenSpaces &lt; spaceIndex then
+        alert.show("Desktop " .. spaceIndex .. " does not exist on this display")
+        return
+    end
+
+    local targetSpaceID = screenSpaces[spaceIndex]
+    spaces.moveWindowToSpace(win, targetSpaceID)
+
+    if FOLLOW_WINDOW then
+        spaces.gotoSpace(targetSpaceID)
+    end
+end
+
+hotkey.bind({"cmd"}, "1", function() moveFocusedWindowToSpace(1) end)
+hotkey.bind({"cmd"}, "2", function() moveFocusedWindowToSpace(2) end)</pre>
+      </div>
+    </section>
+
+    <!-- OPTION 2 -->
+    <section class="card" id="yabai">
+      <div class="card-header">
+        <h3>Option 2: yabai + skhd</h3>
+        <span class="tag tag-amber">Requires Partial SIP Disable</span>
+      </div>
+      <p>
+        If you want instant, rock-solid window management across Spaces, <a href="https://github.com/koekeishiya/yabai" target="_blank" rel="noopener">yabai</a> paired with <a href="https://github.com/koekeishiya/skhd" target="_blank" rel="noopener">skhd</a> is the gold standard. Note that moving windows between Spaces with yabai requires partially disabling SIP in Recovery Mode and loading yabai's scripting addition.
+      </p>
+      <ol>
+        <li>Install both tools: <code>brew install koekeishiya/formulae/yabai koekeishiya/formulae/skhd</code></li>
+        <li>Follow yabai's <a href="https://github.com/koekeishiya/yabai/wiki/Disabling-System-Integrity-Protection" target="_blank" rel="noopener">SIP setup guide</a> and load the scripting addition (<code>sudo yabai --load-sa</code>).</li>
+        <li>Add the bindings below to <code>~/.config/skhd/skhdrc</code> (also in <a href="options/yabai-skhd/skhdrc"><code>options/yabai-skhd/skhdrc</code></a>) and start services with <code>yabai --start-service &amp;&amp; skhd --start-service</code>.</li>
+      </ol>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre># ~/.config/skhd/skhdrc
+# Move active window to Desktop 1 or 2 and follow it:
+cmd - 1 : yabai -m window --space 1 &amp;&amp; yabai -m space --focus 1
+cmd - 2 : yabai -m window --space 2 &amp;&amp; yabai -m space --focus 2
+
+# Or move silently without switching your current desktop:
+# cmd - 1 : yabai -m window --space 1
+# cmd - 2 : yabai -m window --space 2</pre>
+      </div>
+    </section>
+
+    <!-- OPTION 3 -->
+    <section class="card" id="swift">
+      <div class="card-header">
+        <h3>Option 3: Native Swift CLI (Titlebar Grab + Ctrl+1 / Ctrl+2)</h3>
+        <span class="tag tag-green">No SIP Disable &bull; Zero WM Dependencies</span>
+      </div>
+      <p>
+        macOS has a built-in trick: if you click-and-hold a window's titlebar and press <kbd>Ctrl</kbd>+<kbd>1</kbd> or <kbd>Ctrl</kbd>+<kbd>2</kbd>, Mission Control carries that window to Desktop 1 or 2. This Swift binary automates that exact gesture using the Accessibility API and <code>CGEvent</code>.
+      </p>
+      <ol>
+        <li>Enable <strong>Switch to Desktop 1</strong> (<kbd>Ctrl</kbd>+<kbd>1</kbd>) and <strong>Switch to Desktop 2</strong> (<kbd>Ctrl</kbd>+<kbd>2</kbd>) in <em>System Settings &rarr; Keyboard &rarr; Keyboard Shortcuts &rarr; Mission Control</em>.</li>
+        <li>Compile <a href="options/swift-native/MoveWindowToSpace.swift"><code>options/swift-native/MoveWindowToSpace.swift</code></a>:
+          <code>swiftc -O options/swift-native/MoveWindowToSpace.swift -o /usr/local/bin/move-window-to-space</code></li>
+        <li>Bind <kbd>Cmd</kbd>+<kbd>1</kbd> and <kbd>Cmd</kbd>+<kbd>2</kbd> via <code>skhd</code>, Raycast, or macOS Shortcuts to run <code>move-window-to-space 1</code> / <code>2</code>.</li>
+      </ol>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre>// Compile &amp; test from Terminal (grant Accessibility permission when prompted):
+swiftc -O options/swift-native/MoveWindowToSpace.swift -o move-window-to-space
+./move-window-to-space 1</pre>
+      </div>
+    </section>
+
+    <div class="callout info">
+      <strong>Option 4: GUI App (BetterTouchTool)</strong>
+      If you prefer not to maintain scripts or config files, <a href="https://folivora.ai/" target="_blank" rel="noopener">BetterTouchTool</a> has built-in actions called <em>"Move Window to Space 1"</em> and <em>"Move Window to Space 2"</em> that you can bind directly to <kbd>⌘</kbd>+<kbd>1</kbd> and <kbd>⌘</kbd>+<kbd>2</kbd> without disabling SIP.
+    </div>
+
+    <footer>
+      <span>Repository: <a href="https://github.com/rifaterdemsahin/mac-os-screen-mover" target="_blank" rel="noopener">rifaterdemsahin/mac-os-screen-mover</a></span>
+      <span>Deployed via GitHub Pages</span>
+    </footer>
+  </div>
+
+  <script>
+    function copyCode(button) {
+      const pre = button.parentElement.querySelector('pre');
+      navigator.clipboard.writeText(pre.textContent).then(() => {
+        const original = button.textContent;
+        button.textContent = 'Copied!';
+        setTimeout(() => { button.textContent = original; }, 1500);
+      });
+    }
+  </script>
+</body>
+</html>

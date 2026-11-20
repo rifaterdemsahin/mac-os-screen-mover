@@ -1,0 +1,12 @@
+# ~/.config/skhd/skhdrc
+# Move active window to Desktop 1 or 2 using yabai + skhd
+# Note: Moving windows across spaces with yabai requires disabling SIP partially
+# and loading the yabai scripting addition (sudo yabai --load-sa).
+
+# Move window and switch focus to the target desktop:
+cmd - 1 : yabai -m window --space 1 && yabai -m space --focus 1
+cmd - 2 : yabai -m window --space 2 && yabai -m space --focus 2
+
+# Alternative: move window silently without switching desktops:
+# cmd - 1 : yabai -m window --space 1
+# cmd - 2 : yabai -m window --space 2
