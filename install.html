@@ -337,7 +337,7 @@ yabai --start-service &amp;&amp; skhd --start-service</pre>
         <span class="tag tag-green">No SIP disable &bull; Zero WM dependencies</span>
       </div>
       <ol>
-        <li><strong>Enable Mission Control shortcuts:</strong> Go to <em>System Settings &rarr; Keyboard &rarr; Keyboard Shortcuts &rarr; Mission Control</em> and enable <strong>Switch to Desktop 1</strong> (<kbd>Ctrl</kbd>+<kbd>1</kbd>) and <strong>Switch to Desktop 2</strong> (<kbd>Ctrl</kbd>+<kbd>2</kbd>).</li>
+        <li><strong>Enable Mission Control shortcuts:</strong> Go to <em>System Settings &rarr; Keyboard &rarr; Keyboard Shortcuts &rarr; Mission Control</em> and enable <strong>Switch to Desktop 1</strong> through <strong>Switch to Desktop 10</strong> (<kbd>Ctrl</kbd>+<kbd>1</kbd> .. <kbd>Ctrl</kbd>+<kbd>0</kbd>).</li>
         <li><strong>Compile and install the binary:</strong></li>
       </ol>
       <div class="code-wrap">
@@ -354,7 +354,7 @@ swiftc -O options/swift-native/MoveWindowToSpace.swift -o /usr/local/bin/move-wi
 <pre>move-window-to-space 2</pre>
       </div>
       <ol start="4">
-        <li><strong>Bind hotkeys:</strong> Use Raycast, macOS Shortcuts, or <code>skhd</code> to run <code>move-window-to-space 1</code> on <kbd>Cmd</kbd>+<kbd>1</kbd> and <code>move-window-to-space 2</code> on <kbd>Cmd</kbd>+<kbd>2</kbd>.</li>
+        <li><strong>Bind hotkeys:</strong> Use Raycast, macOS Shortcuts, or <code>skhd</code> to run <code>move-window-to-space 1</code> through <code>10</code> on <kbd>Ctrl</kbd>+<kbd>Option</kbd>+<kbd>1</kbd> .. <kbd>0</kbd>.</li>
       </ol>
     </section>
 
@@ -362,7 +362,8 @@ swiftc -O options/swift-native/MoveWindowToSpace.swift -o /usr/local/bin/move-wi
     <div class="card">
       <ol>
         <li>Click any application window so it is the <strong>active (focused) window</strong>.</li>
-        <li>Press <kbd>⌘ Cmd</kbd> + <kbd>1</kbd> to send it to <strong>Desktop 1</strong>, or <kbd>⌘ Cmd</kbd> + <kbd>2</kbd> to send it to <strong>Desktop 2</strong>.</li>
+        <li>Press <kbd>⌃ Ctrl</kbd> + <kbd>⌥ Option</kbd> + <kbd>1</kbd>..<kbd>9</kbd> to send it to <strong>Desktop 1</strong>..<strong>9</strong>, or <kbd>⌃ Ctrl</kbd> + <kbd>⌥ Option</kbd> + <kbd>0</kbd> to send it to <strong>Desktop 10</strong>.</li>
+        <li>Your <kbd>⌘ Cmd</kbd> + <kbd>1</kbd>..<kbd>9</kbd> browser/editor tab shortcuts remain untouched.</li>
         <li>By default, your focus follows the window to the target desktop.</li>
       </ol>
 
@@ -372,11 +373,11 @@ swiftc -O options/swift-native/MoveWindowToSpace.swift -o /usr/local/bin/move-wi
           In <code>~/.hammerspoon/init.lua</code>, change <code>local FOLLOW_WINDOW = true</code> to <code>false</code>.
           In <code>~/.config/skhd/skhdrc</code>, remove <code>&amp;&amp; yabai -m space --focus 1</code>.
         </li>
-        <li><strong>Keep browser tab shortcuts (<kbd>Cmd</kbd>+<kbd>1</kbd> / <kbd>2</kbd>):</strong>
-          Change <code>{"cmd"}</code> to <code>{"ctrl", "alt"}</code> in <code>init.lua</code>, or change <code>cmd - 1</code> to <code>ctrl + alt - 1</code> in <code>skhdrc</code>.
+        <li><strong>Use a different modifier key:</strong>
+          In <code>init.lua</code>, change <code>local MODIFIERS = {"ctrl", "alt"}</code> (for example to <code>{"cmd", "shift"}</code> or <code>{"ctrl", "cmd"}</code>), or change <code>ctrl + alt</code> in <code>skhdrc</code>.
         </li>
-        <li><strong>Add Desktop 3 or 4:</strong>
-          Duplicate the <code>hotkey.bind</code> lines in <code>init.lua</code> with <code>3</code> / <code>4</code>, or pass <code>3</code>..<code>9</code> to <code>move-window-to-space</code>.
+        <li><strong>Customize the desktop range (1&ndash;10):</strong>
+          <code>options/hammerspoon/init.lua</code> binds <code>1</code> through <code>10</code> (mapping <code>10</code> to key <code>"0"</code>) via <code>for i = 1, 10 do</code>; adjust that upper bound if you want fewer or more.
         </li>
       </ul>
     </div>
@@ -391,7 +392,7 @@ swiftc -O options/swift-native/MoveWindowToSpace.swift -o /usr/local/bin/move-wi
       This happens when you run <code>cp options/hammerspoon/init.lua ...</code> from a different directory (for example, your home or another project folder) instead of inside the cloned <code>mac-os-screen-mover</code> repo. Either <code>cd mac-os-screen-mover</code> first, or run the <code>curl</code> command above which works from any directory.
     </div>
     <div class="callout warn">
-      <strong>Nothing happens when pressing Cmd+1 or Cmd+2</strong>
+      <strong>Nothing happens when pressing Ctrl+Option+1..0</strong>
       Make sure Hammerspoon, <code>skhd</code>, or your terminal/launcher app is enabled in <em>System Settings &rarr; Privacy &amp; Security &rarr; Accessibility</em>. If you recently updated macOS or the app, toggle the checkbox off and back on.
     </div>
     <div class="callout">

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>macOS Screen Mover — Cmd+1 &amp; Cmd+2 Window-to-Desktop Guide</title>
+  <title>macOS Screen Mover — Ctrl+Option+1..0 Window-to-Desktop Guide</title>
   <style>
     :root {
       --bg: #0d1117;
@@ -260,19 +260,19 @@
     <script src="nav.js"></script>
     <header>
       <div class="badge">macOS Mission Control Automation</div>
-      <h1>Move Active Window to Virtual Desktop 1 or 2</h1>
+      <h1>Move Active Window to Virtual Desktop 1&ndash;10</h1>
       <p class="subtitle">
-        macOS does not provide a built-in keyboard shortcut or public Apple API to send the focused window directly to a numbered Space. Here are your best options to bind <kbd>⌘ Cmd</kbd> + <kbd>1</kbd> and <kbd>⌘ Cmd</kbd> + <kbd>2</kbd> to move the active window to Desktop 1 or Desktop 2.
+        macOS does not provide a built-in keyboard shortcut or public Apple API to send the focused window directly to a numbered Space. Here are your best options to bind <kbd>⌃ Ctrl</kbd> + <kbd>⌥ Option</kbd> + <kbd>1</kbd>..<kbd>9</kbd> and <kbd>0</kbd> to move the active window to Desktops 1&ndash;10 without breaking <kbd>⌘ Cmd</kbd> + <kbd>1</kbd>..<kbd>9</kbd> tab switching.
       </p>
       <div class="hotkey-row">
-        <div class="hotkey-pill"><kbd>⌘</kbd> + <kbd>1</kbd> &rarr; Move active window to <strong>Desktop 1</strong></div>
-        <div class="hotkey-pill"><kbd>⌘</kbd> + <kbd>2</kbd> &rarr; Move active window to <strong>Desktop 2</strong></div>
+        <div class="hotkey-pill"><kbd>⌃</kbd> + <kbd>⌥</kbd> + <kbd>1</kbd> .. <kbd>9</kbd> &rarr; <strong>Desktop 1 &ndash; 9</strong></div>
+        <div class="hotkey-pill"><kbd>⌃</kbd> + <kbd>⌥</kbd> + <kbd>0</kbd> &rarr; <strong>Desktop 10</strong></div>
       </div>
     </header>
 
     <div class="callout">
-      <strong>Important Hotkey Caveat</strong>
-      Global <kbd>⌘</kbd>+<kbd>1</kbd> and <kbd>⌘</kbd>+<kbd>2</kbd> will override built-in app shortcuts (such as switching to Tab 1 / Tab 2 in Chrome/Safari or changing Finder view modes). If you want to keep those app shortcuts intact, swap <code>cmd</code> for <code>ctrl + alt</code> or <code>cmd + shift</code> in any of the configs below.
+      <strong>Why Ctrl + Option (and not Cmd)?</strong>
+      Global <kbd>⌘</kbd>+<kbd>1</kbd> through <kbd>⌘</kbd>+<kbd>9</kbd> override built-in app shortcuts (such as switching to Tab 1&ndash;9 in Chrome, Safari, or VS Code), and <kbd>⌘</kbd>+<kbd>⇧</kbd>+<kbd>3</kbd>/<kbd>4</kbd>/<kbd>5</kbd> collide with macOS screenshots. Using <kbd>⌃ Ctrl</kbd> + <kbd>⌥ Option</kbd> keeps app tabs intact and pairs naturally with macOS's built-in <kbd>⌃ Ctrl</kbd> + <kbd>1</kbd>..<kbd>0</kbd> Space-switching shortcuts.
     </div>
 
     <h2>Comparison of Implementation Options</h2>
@@ -322,7 +322,7 @@
         <span class="tag tag-green">No SIP Disable &bull; Free &amp; Open Source</span>
       </div>
       <p>
-        <a href="https://www.hammerspoon.org/" target="_blank" rel="noopener">Hammerspoon</a> is a lightweight macOS automation tool. Its <code>hs.spaces</code> module can move the focused window directly to Space 1 or Space 2 without disabling System Integrity Protection.
+        <a href="https://www.hammerspoon.org/" target="_blank" rel="noopener">Hammerspoon</a> is a lightweight macOS automation tool. Its <code>hs.spaces</code> module can move the focused window directly to Spaces 1&ndash;10 without disabling System Integrity Protection.
       </p>
       <ol>
         <li>Install Hammerspoon: <code>brew install --cask hammerspoon</code></li>
@@ -336,6 +336,9 @@ local spaces = require("hs.spaces")
 local window = require("hs.window")
 local hotkey = require("hs.hotkey")
 local alert  = require("hs.alert")
+
+-- Modifier keys (avoids Cmd+1..9 browser/editor tab shortcuts)
+local MODIFIERS = {"ctrl", "alt"}
 
 -- Set to true to follow the window to the target desktop; false to stay put
 local FOLLOW_WINDOW = true
@@ -362,8 +365,10 @@ local function moveFocusedWindowToSpace(spaceIndex)
     end
 end
 
-hotkey.bind({"cmd"}, "1", function() moveFocusedWindowToSpace(1) end)
-hotkey.bind({"cmd"}, "2", function() moveFocusedWindowToSpace(2) end)</pre>
+for i = 1, 10 do
+    local key = (i == 10) and "0" or tostring(i)
+    hotkey.bind(MODIFIERS, key, function() moveFocusedWindowToSpace(i) end)
+end</pre>
       </div>
     </section>
 
@@ -384,13 +389,15 @@ hotkey.bind({"cmd"}, "2", function() moveFocusedWindowToSpace(2) end)</pre>
       <div class="code-wrap">
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
 <pre># ~/.config/skhd/skhdrc
-# Move active window to Desktop 1 or 2 and follow it:
-cmd - 1 : yabai -m window --space 1 &amp;&amp; yabai -m space --focus 1
-cmd - 2 : yabai -m window --space 2 &amp;&amp; yabai -m space --focus 2
+# Move active window to Desktop 1..10 and follow it (0 = Desktop 10):
+ctrl + alt - 1 : yabai -m window --space 1 &amp;&amp; yabai -m space --focus 1
+ctrl + alt - 2 : yabai -m window --space 2 &amp;&amp; yabai -m space --focus 2
+# ... repeat for 3..9 and 0 -> 10 (see options/yabai-skhd/skhdrc for full 1..10 config)
+ctrl + alt - 0 : yabai -m window --space 10 &amp;&amp; yabai -m space --focus 10
 
 # Or move silently without switching your current desktop:
-# cmd - 1 : yabai -m window --space 1
-# cmd - 2 : yabai -m window --space 2</pre>
+# ctrl + alt - 1 : yabai -m window --space 1
+# ctrl + alt - 0 : yabai -m window --space 10</pre>
       </div>
     </section>
 
@@ -404,10 +411,10 @@ cmd - 2 : yabai -m window --space 2 &amp;&amp; yabai -m space --focus 2
         macOS has a built-in trick: if you click-and-hold a window's titlebar and press <kbd>Ctrl</kbd>+<kbd>1</kbd> or <kbd>Ctrl</kbd>+<kbd>2</kbd>, Mission Control carries that window to Desktop 1 or 2. This Swift binary automates that exact gesture using the Accessibility API and <code>CGEvent</code>.
       </p>
       <ol>
-        <li>Enable <strong>Switch to Desktop 1</strong> (<kbd>Ctrl</kbd>+<kbd>1</kbd>) and <strong>Switch to Desktop 2</strong> (<kbd>Ctrl</kbd>+<kbd>2</kbd>) in <em>System Settings &rarr; Keyboard &rarr; Keyboard Shortcuts &rarr; Mission Control</em>.</li>
+        <li>Enable <strong>Switch to Desktop 1</strong> (<kbd>Ctrl</kbd>+<kbd>1</kbd>) through <strong>Switch to Desktop 10</strong> (<kbd>Ctrl</kbd>+<kbd>0</kbd>) in <em>System Settings &rarr; Keyboard &rarr; Keyboard Shortcuts &rarr; Mission Control</em>.</li>
         <li>Compile <a href="options/swift-native/MoveWindowToSpace.swift"><code>options/swift-native/MoveWindowToSpace.swift</code></a>:
           <code>swiftc -O options/swift-native/MoveWindowToSpace.swift -o /usr/local/bin/move-window-to-space</code></li>
-        <li>Bind <kbd>Cmd</kbd>+<kbd>1</kbd> and <kbd>Cmd</kbd>+<kbd>2</kbd> via <code>skhd</code>, Raycast, or macOS Shortcuts to run <code>move-window-to-space 1</code> / <code>2</code>.</li>
+        <li>Bind <kbd>Ctrl</kbd>+<kbd>Option</kbd>+<kbd>1</kbd>..<kbd>0</kbd> via <code>skhd</code>, Raycast, or macOS Shortcuts to run <code>move-window-to-space 1</code> .. <code>10</code>.</li>
       </ol>
       <div class="code-wrap">
         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
@@ -419,7 +426,7 @@ swiftc -O options/swift-native/MoveWindowToSpace.swift -o move-window-to-space
 
     <div class="callout info">
       <strong>Option 4: GUI App (BetterTouchTool)</strong>
-      If you prefer not to maintain scripts or config files, <a href="https://folivora.ai/" target="_blank" rel="noopener">BetterTouchTool</a> has built-in actions called <em>"Move Window to Space 1"</em> and <em>"Move Window to Space 2"</em> that you can bind directly to <kbd>⌘</kbd>+<kbd>1</kbd> and <kbd>⌘</kbd>+<kbd>2</kbd> without disabling SIP.
+      If you prefer not to maintain scripts or config files, <a href="https://folivora.ai/" target="_blank" rel="noopener">BetterTouchTool</a> has built-in actions called <em>"Move Window to Space 1..10"</em> that you can bind directly to <kbd>⌃</kbd>+<kbd>⌥</kbd>+<kbd>1</kbd>..<kbd>0</kbd> without disabling SIP.
     </div>
 
     <footer>

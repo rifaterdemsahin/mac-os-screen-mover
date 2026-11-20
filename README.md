@@ -1,6 +1,6 @@
 # 🖥️ mac-os-screen-mover
 
-🚀 Move the active macOS window to **Desktop 1** with `⌘ Cmd + 1` or **Desktop 2** with `⌘ Cmd + 2`.
+🚀 Move the active macOS window to **Desktop 1 – 10** with `⌃ Ctrl + ⌥ Option + 1`..`9` and `⌃ Ctrl + ⌥ Option + 0` (Desktop 10).
 
 🌐 **Live Guide & Documentation (GitHub Pages):**
 - 📖 [Overview & Options Comparison](https://rifaterdemsahin.github.io/mac-os-screen-mover/)
@@ -11,8 +11,8 @@
 
 1. 🔨 **[Hammerspoon (`options/hammerspoon/init.lua`)](options/hammerspoon/init.lua)** — ⭐ Recommended. No SIP disable required; uses `hs.spaces` and `hs.hotkey`.
 2. 🪟 **[yabai + skhd (`options/yabai-skhd/skhdrc`)](options/yabai-skhd/skhdrc)** — ⚡ Best if you already use a tiling window manager (⚠️ requires partial SIP disable).
-3. 🦅 **[Native Swift CLI (`options/swift-native/MoveWindowToSpace.swift`)](options/swift-native/MoveWindowToSpace.swift)** — 🧩 Zero third-party window manager; uses Accessibility + `CGEvent` titlebar-drag + `Ctrl+1`/`Ctrl+2`.
+3. 🦅 **[Native Swift CLI (`options/swift-native/MoveWindowToSpace.swift`)](options/swift-native/MoveWindowToSpace.swift)** — 🧩 Zero third-party window manager; uses Accessibility + `CGEvent` titlebar-drag + `Ctrl+1`..`Ctrl+0`.
 
-## ⚠️ Hotkey Note
+## ⚠️ Why `Ctrl + Option` Instead of `Cmd`?
 
-⌨️ Global `⌘ Cmd + 1` and `⌘ Cmd + 2` override app-level tab/view shortcuts (e.g., browser Tab 1/2). Swap `cmd` for `ctrl + alt` or `cmd + shift` if you want to keep those intact!
+⌨️ Global `⌘ Cmd + 1` through `⌘ Cmd + 9` override app-level tab/view shortcuts (such as switching browser or editor tabs). Using **`⌃ Ctrl + ⌥ Option + 1..9, 0`** keeps your `⌘ Cmd + 1..9` tab shortcuts intact and pairs naturally with macOS's built-in `⌃ Ctrl + 1..0` desktop-switching shortcuts! You can still customize `MODIFIERS` in `init.lua` if you prefer another combo.

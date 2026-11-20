@@ -1,12 +1,12 @@
 // MoveWindowToSpace.swift
 // Compile: swiftc -O MoveWindowToSpace.swift -o move-window-to-space
 // Usage:   ./move-window-to-space 1   (moves active window to Desktop 1)
-//          ./move-window-to-space 2   (moves active window to Desktop 2)
+//          ./move-window-to-space 10  (moves active window to Desktop 10)
 //
 // Prerequisites:
 // 1. Grant Accessibility permission to your terminal/app in:
 //    System Settings -> Privacy & Security -> Accessibility
-// 2. Enable "Switch to Desktop 1" (Ctrl+1) and "Switch to Desktop 2" (Ctrl+2) in:
+// 2. Enable "Switch to Desktop 1" (Ctrl+1) .. "Switch to Desktop 10" (Ctrl+0) in:
 //    System Settings -> Keyboard -> Keyboard Shortcuts -> Mission Control
 
 import Cocoa
@@ -14,15 +14,15 @@ import ApplicationServices
 
 guard CommandLine.arguments.count == 2,
       let targetDesktop = Int(CommandLine.arguments[1]),
-      (1...9).contains(targetDesktop) else {
-    fputs("Usage: move-window-to-space <1-9>\n", stderr)
+      (1...10).contains(targetDesktop) else {
+    fputs("Usage: move-window-to-space <1-10>\n", stderr)
     exit(1)
 }
 
-// Virtual key codes for digits 1..9 on US ANSI layout
+// Virtual key codes for digits 1..9 and 0 (Desktop 10) on US ANSI layout
 let desktopKeyCodes: [Int: CGKeyCode] = [
     1: 0x12, 2: 0x13, 3: 0x14, 4: 0x15, 5: 0x17,
-    6: 0x16, 7: 0x1A, 8: 0x1C, 9: 0x19
+    6: 0x16, 7: 0x1A, 8: 0x1C, 9: 0x19, 10: 0x1D
 ]
 
 guard let keyCode = desktopKeyCodes[targetDesktop] else {
