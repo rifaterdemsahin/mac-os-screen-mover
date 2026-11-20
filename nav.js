@@ -90,4 +90,40 @@
 
   nav.appendChild(links);
   mount.replaceWith(nav);
+
+  // Enhance footer on every page with GitHub link & latest release/commit info
+  const REPO = 'rifaterdemsahin/mac-os-screen-mover';
+  const REPO_URL = `https://github.com/${REPO}`;
+  const footer = document.querySelector('footer');
+  if (footer) {
+    const releaseSpan = document.createElement('span');
+    releaseSpan.innerHTML = `🚀 Last release: <a href="${REPO_URL}/releases" target="_blank" rel="noopener">checking...</a>`;
+
+    const gitSpan = document.createElement('span');
+    gitSpan.innerHTML = `🔗 Git: <a href="${REPO_URL}" target="_blank" rel="noopener">${REPO}</a>`;
+
+    footer.innerHTML = '';
+    footer.appendChild(gitSpan);
+    footer.appendChild(releaseSpan);
+
+    fetch(`https://api.github.com/repos/${REPO}/releases/latest`)
+      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((rel) => {
+        const tag = rel.tag_name || rel.name || 'latest';
+        const date = rel.published_at ? rel.published_at.slice(0, 10) : '';
+        releaseSpan.innerHTML = `🚀 Last release: <a href="${rel.html_url}" target="_blank" rel="noopener">${tag}${date ? ` (${date})` : ''}</a>`;
+      })
+      .catch(() =>
+        fetch(`https://api.github.com/repos/${REPO}/commits/main`)
+          .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+          .then((commit) => {
+            const sha = (commit.sha || '').slice(0, 7);
+            const date = commit.commit?.author?.date ? commit.commit.author.date.slice(0, 10) : '';
+            releaseSpan.innerHTML = `🚀 Latest update: <a href="${commit.html_url}" target="_blank" rel="noopener">${sha}${date ? ` (${date})` : ''}</a> &middot; <a href="${REPO_URL}/releases" target="_blank" rel="noopener">Releases</a>`;
+          })
+          .catch(() => {
+            releaseSpan.innerHTML = `🚀 Releases: <a href="${REPO_URL}/releases" target="_blank" rel="noopener">View on GitHub</a>`;
+          })
+      );
+  }
 })();
