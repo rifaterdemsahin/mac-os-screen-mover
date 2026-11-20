@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recommendations — macOS Screen Mover</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface-2: #1f2630;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-soft: rgba(88, 166, 255, 0.14);
+      --green: #3fb950;
+      --green-soft: rgba(63, 185, 80, 0.15);
+      --amber: #d29922;
+      --amber-soft: rgba(210, 153, 34, 0.15);
+      --radius: 12px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 28px 20px 80px;
+    }
+
+    header {
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: var(--accent-soft);
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      line-height: 1.2;
+      margin: 0 0 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.06rem;
+      margin: 0;
+      max-width: 740px;
+    }
+
+    h2 {
+      font-size: 1.45rem;
+      margin: 44px 0 16px;
+      letter-spacing: -0.01em;
+    }
+
+    h3 {
+      font-size: 1.12rem;
+      margin: 0 0 8px;
+    }
+
+    p { margin: 0 0 14px; }
+
+    kbd {
+      display: inline-block;
+      padding: 2px 8px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-bottom-width: 2px;
+      border-radius: 6px;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.88em;
+      background: var(--surface-2);
+      padding: 2px 6px;
+      border-radius: 5px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin: 16px 0 28px;
+    }
+
+    .mini-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+    }
+
+    .callout {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--green);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin: 24px 0;
+    }
+
+    .callout.info {
+      border-left-color: var(--accent);
+    }
+
+    .callout strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    ul, ol {
+      margin: 8px 0 16px;
+      padding-left: 22px;
+    }
+
+    li { margin-bottom: 8px; }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    footer {
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.9rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="shared-topnav"></div>
+    <script src="nav.js"></script>
+
+    <header>
+      <div class="badge">💡 Best Practices &amp; Setup Tips</div>
+      <h1>Recommendations</h1>
+      <p class="subtitle">
+        Practical recommendations for choosing shortcuts, configuring macOS Mission Control, and organizing Virtual Desktops 1&ndash;10 without breaking app-level hotkeys.
+      </p>
+    </header>
+
+    <h2>1. Recommended Hotkey Combination</h2>
+    <div class="callout">
+      <strong>Use <kbd>⌃ Ctrl</kbd> + <kbd>⌥ Option</kbd> + <kbd>1</kbd>..<kbd>0</kbd> (and keep <kbd>⌘ Cmd</kbd> + <kbd>1</kbd>..<kbd>9</kbd> for Tabs)</strong>
+      Mapping <kbd>⌃ Ctrl</kbd> + <kbd>⌥ Option</kbd> + <kbd>1</kbd>..<kbd>9</kbd> to Desktops 1&ndash;9 and <kbd>⌃ Ctrl</kbd> + <kbd>⌥ Option</kbd> + <kbd>0</kbd> to Desktop 10 avoids overriding browser/editor tab switching (<kbd>⌘ Cmd</kbd>+<kbd>1</kbd>..<kbd>9</kbd>) and macOS screenshots (<kbd>⌘ Cmd</kbd>+<kbd>⇧ Shift</kbd>+<kbd>3</kbd>/<kbd>4</kbd>/<kbd>5</kbd>).
+    </div>
+
+    <div class="grid-2">
+      <div class="mini-card">
+        <h3>Switch Desktop (Built-in)</h3>
+        <p style="margin-bottom:0; color: var(--muted);">
+          <kbd>⌃ Ctrl</kbd> + <kbd>1</kbd>..<kbd>0</kbd> jumps your focus directly to Desktop 1&ndash;10. Enable these in <em>System Settings &rarr; Keyboard &rarr; Keyboard Shortcuts &rarr; Mission Control</em>.
+        </p>
+      </div>
+      <div class="mini-card">
+        <h3>Move Active Window (This Tool)</h3>
+        <p style="margin-bottom:0; color: var(--muted);">
+          Add <kbd>⌥ Option</kbd> (<kbd>⌃ Ctrl</kbd> + <kbd>⌥ Option</kbd> + <kbd>1</kbd>..<kbd>0</kbd>) to carry the focused window with you to that same Desktop.
+        </p>
+      </div>
+    </div>
+
+    <h2>2. Recommended Tool by User Type</h2>
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Your Setup</th>
+            <th>Recommended Option</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Most macOS Users</strong></td>
+            <td><a href="install.html#install-hammerspoon">🔨 Hammerspoon</a></td>
+            <td>No SIP disable required, fast <code>hs.spaces</code> API, easy <code>MODIFIERS</code> &amp; <code>FOLLOW_WINDOW</code> toggles.</td>
+          </tr>
+          <tr>
+            <td><strong>Tiling WM Power Users</strong></td>
+            <td><a href="install.html#install-yabai">🪟 yabai + skhd</a></td>
+            <td>Instant Space transitions if you already run <code>yabai</code> with partial SIP disabled.</td>
+          </tr>
+          <tr>
+            <td><strong>Minimalists / Zero WM</strong></td>
+            <td><a href="install.html#install-swift">🦅 Native Swift CLI</a></td>
+            <td>Single compiled binary using Accessibility + <code>CGEvent</code>; bind via Raycast or Shortcuts.</td>
+          </tr>
+          <tr>
+            <td><strong>No Config Files</strong></td>
+            <td>🧩 BetterTouchTool</td>
+            <td>GUI-based actions for <em>Move Window to Space 1..10</em> without editing Lua or shell configs.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>3. Recommended macOS Settings</h2>
+    <div class="card">
+      <ol>
+        <li>
+          <strong>Lock Desktop Order:</strong>
+          Go to <em>System Settings &rarr; Desktop &amp; Dock &rarr; Mission Control</em> and turn <strong>OFF</strong>
+          <em>"Automatically rearrange Spaces based on most recent use"</em>. This keeps Desktops 1&ndash;10 in fixed positions.
+        </li>
+        <li>
+          <strong>Reduce Motion (Optional):</strong>
+          Enable <em>System Settings &rarr; Accessibility &rarr; Display &rarr; Reduce motion</em> to make Space switching feel snappier with cross-fade instead of sliding animations.
+        </li>
+        <li>
+          <strong>Choose Follow vs. Stay Put:</strong>
+          Keep <code>FOLLOW_WINDOW = true</code> in <code>init.lua</code> when moving an app you are about to work in; set <code>FOLLOW_WINDOW = false</code> if you mostly clean up stray windows while staying on your current Desktop.
+        </li>
+      </ol>
+    </div>
+
+    <h2>4. Example 1&ndash;10 Desktop Layout</h2>
+    <div class="card">
+      <p style="color: var(--muted);">
+        Assigning fixed roles to numbered Desktops builds muscle memory so you never have to scan Mission Control thumbnails:
+      </p>
+      <ul>
+        <li><strong>Desktop 1 (<kbd>⌃⌥1</kbd>):</strong> Primary Browser &amp; Docs</li>
+        <li><strong>Desktop 2 (<kbd>⌃⌥2</kbd>):</strong> Code Editor / IDE</li>
+        <li><strong>Desktop 3 (<kbd>⌃⌥3</kbd>):</strong> Terminal / Logs / Dev Servers</li>
+        <li><strong>Desktop 4 (<kbd>⌃⌥4</kbd>):</strong> Chat, Email &amp; Calendar</li>
+        <li><strong>Desktop 5&ndash;9 (<kbd>⌃⌥5</kbd>&ndash;<kbd>9</kbd>):</strong> Secondary projects, design tools, databases, or test browsers</li>
+        <li><strong>Desktop 10 (<kbd>⌃⌥0</kbd>):</strong> Music, notes, or background dashboards</li>
+      </ul>
+    </div>
+
+    <div class="callout info">
+      <strong>Ready to install?</strong>
+      Head to the <a href="install.html">📦 Install &amp; How to Use</a> guide to set up Hammerspoon in under 2 minutes.
+    </div>
+
+    <footer>
+      <span>Repository: <a href="https://github.com/rifaterdemsahin/mac-os-screen-mover" target="_blank" rel="noopener">rifaterdemsahin/mac-os-screen-mover</a></span>
+      <span><a href="install.html">Install &amp; How to Use &rarr;</a></span>
+    </footer>
+  </div>
+</body>
+</html>

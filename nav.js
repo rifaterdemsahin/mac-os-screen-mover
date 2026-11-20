@@ -1,11 +1,12 @@
 (function () {
   const ITEMS = [
-    { href: 'index.html', label: 'Overview' },
-    { href: 'first-principles.html', label: 'First Principles' },
-    { href: 'install.html', label: 'Install & How to Use' },
+    { href: 'index.html', label: '📖 Overview' },
+    { href: 'first-principles.html', label: '🧠 First Principles' },
+    { href: 'install.html', label: '📦 Install & How to Use' },
+    { href: 'recommendations.html', label: '💡 Recommendations' },
     {
       href: 'https://github.com/rifaterdemsahin/mac-os-screen-mover',
-      label: 'GitHub',
+      label: '🔗 GitHub',
       external: true,
     },
   ];
@@ -67,7 +68,7 @@
   const brand = document.createElement('a');
   brand.className = 'brand';
   brand.href = 'index.html';
-  brand.textContent = 'macOS Screen Mover';
+  brand.textContent = '🖥️ macOS Screen Mover';
   nav.appendChild(brand);
 
   const links = document.createElement('div');
