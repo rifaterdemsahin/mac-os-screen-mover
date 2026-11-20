@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>First Principles: Why This Exists — macOS Screen Mover</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface-2: #1f2630;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-soft: rgba(88, 166, 255, 0.14);
+      --green: #3fb950;
+      --green-soft: rgba(63, 185, 80, 0.15);
+      --amber: #d29922;
+      --amber-soft: rgba(210, 153, 34, 0.15);
+      --code-bg: #0b0f14;
+      --radius: 12px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 28px 20px 80px;
+    }
+
+    .topnav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 20px;
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .nav-link {
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--muted);
+      border: 1px solid transparent;
+      text-decoration: none;
+    }
+
+    .nav-link:hover {
+      color: var(--text);
+      background: var(--surface);
+      text-decoration: none;
+    }
+
+    .nav-link.active {
+      color: var(--accent);
+      background: var(--accent-soft);
+      border-color: rgba(88, 166, 255, 0.35);
+    }
+
+    header {
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: var(--accent-soft);
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      line-height: 1.2;
+      margin: 0 0 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.06rem;
+      margin: 0;
+      max-width: 740px;
+    }
+
+    h2 {
+      font-size: 1.45rem;
+      margin: 44px 0 16px;
+      letter-spacing: -0.01em;
+    }
+
+    h3 {
+      font-size: 1.12rem;
+      margin: 0 0 8px;
+    }
+
+    p { margin: 0 0 14px; }
+
+    kbd {
+      display: inline-block;
+      padding: 2px 8px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-bottom-width: 2px;
+      border-radius: 6px;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.88em;
+      background: var(--surface-2);
+      padding: 2px 6px;
+      border-radius: 5px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 16px;
+      margin: 16px 0 28px;
+    }
+
+    .mini-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+
+    .callout {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--amber);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin: 24px 0;
+    }
+
+    .callout.info {
+      border-left-color: var(--accent);
+    }
+
+    .callout strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    ul, ol {
+      margin: 8px 0 16px;
+      padding-left: 22px;
+    }
+
+    li { margin-bottom: 8px; }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    footer {
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.9rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="topnav" aria-label="Primary">
+      <a class="brand" href="index.html">macOS Screen Mover</a>
+      <div class="nav-links">
+        <a class="nav-link" href="index.html">Overview</a>
+        <a class="nav-link active" href="first-principles.html">First Principles</a>
+        <a class="nav-link" href="install.html">Install &amp; How to Use</a>
+        <a class="nav-link" href="https://github.com/rifaterdemsahin/mac-os-screen-mover" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </nav>
+
+    <header>
+      <div class="badge">Mental Model &amp; Motivation</div>
+      <h1>First Principles: Why I Use This</h1>
+      <p class="subtitle">
+        When you work across many macOS Virtual Desktops (Spaces), windows inevitably pile up in the wrong places. This project exists to make re-sorting your windows across desktops instant, deterministic, and 100% keyboard-driven.
+      </p>
+    </header>
+
+    <h2>1. The Reality of Working with Many Virtual Desktops</h2>
+    <div class="card">
+      <p>
+        Virtual Desktops (Spaces) on macOS are great for separating contexts—one Space for coding, one for research/browsers, others for terminals, docs, or communication.
+      </p>
+      <p style="margin-bottom:0;">
+        In practice, though, windows drift: new windows open on whichever Space you happen to be looking at, external monitors connect and disconnect, and apps spawn popups or extra windows on the wrong desktop. Before long, your clean layout becomes cluttered and you need to <strong>re-sort windows back onto the desktops where they belong</strong>.
+      </p>
+    </div>
+
+    <h2>2. Where Stock macOS Falls Short</h2>
+    <div class="grid-2">
+      <div class="mini-card">
+        <h3>No Native "Move to Desktop N" Key</h3>
+        <p style="margin-bottom:0; color: var(--muted);">
+          macOS lets you <em>switch</em> to Desktop 1 or 2 with <kbd>Ctrl</kbd>+<kbd>1</kbd> / <kbd>2</kbd>, but offers <strong>no built-in shortcut</strong> to send the active window to a numbered Desktop.
+        </p>
+      </div>
+      <div class="mini-card">
+        <h3>Dragging Breaks Flow</h3>
+        <p style="margin-bottom:0; color: var(--muted);">
+          The default workaround—opening Mission Control and dragging a window thumbnail onto another Space—requires taking your hands off the keyboard and hunting visually when you have many Spaces.
+        </p>
+      </div>
+      <div class="mini-card">
+        <h3>Spaces Shift Underfoot</h3>
+        <p style="margin-bottom:0; color: var(--muted);">
+          By default, macOS reorders your Spaces based on recent use, which scrambles your mental map of where Desktop 1, 2, 3, etc. actually are.
+        </p>
+      </div>
+      <div class="mini-card">
+        <h3>No Public Apple API</h3>
+        <p style="margin-bottom:0; color: var(--muted);">
+          Apple does not expose a public API for moving windows between Spaces, so reliable automation requires either <code>hs.spaces</code>, <code>yabai</code>, or Accessibility + <code>CGEvent</code>.
+        </p>
+      </div>
+    </div>
+
+    <h2>3. The Core Principles Behind This Tool</h2>
+    <div class="card">
+      <ol>
+        <li>
+          <strong>Spatial Memory Over Visual Hunting:</strong>
+          Desktop 1 and Desktop 2 should always represent fixed, predictable anchors in your workflow. When a window lands on the wrong Space, you shouldn't have to scan 5+ thumbnails to file it away.
+        </li>
+        <li>
+          <strong>One-Keystroke Re-sorting:</strong>
+          Focus a window, press <kbd>⌘ Cmd</kbd> + <kbd>1</kbd> or <kbd>⌘ Cmd</kbd> + <kbd>2</kbd>, and it is immediately moved to Desktop 1 or Desktop 2. You can re-sort half a dozen stray windows in a few seconds.
+        </li>
+        <li>
+          <strong>Choose Whether to Follow or Stay Put:</strong>
+          Sometimes you want to move a window and switch to that desktop to keep working on it (<code>FOLLOW_WINDOW = true</code>). Other times you are tidying up your current Space and want to stay right where you are while tossing windows elsewhere (<code>FOLLOW_WINDOW = false</code>).
+        </li>
+        <li>
+          <strong>No Unnecessary System Compromise:</strong>
+          Start with <a href="install.html#install-hammerspoon">Hammerspoon</a> (no SIP disable required). Only reach for <code>yabai + skhd</code> if you already want a full tiling window manager.
+        </li>
+      </ol>
+    </div>
+
+    <div class="callout">
+      <strong>Essential macOS Setting for Many Desktops</strong>
+      If you use many Virtual Desktops and want to re-sort them predictably, go to
+      <em>System Settings &rarr; Desktop &amp; Dock &rarr; Mission Control</em> and turn <strong>OFF</strong>
+      <em>"Automatically rearrange Spaces based on most recent use"</em>. That guarantees Desktop 1, Desktop 2, Desktop 3, etc. stay in the exact order you expect.
+    </div>
+
+    <div class="callout info">
+      <strong>Ready to set it up?</strong>
+      Head over to the <a href="install.html">Install &amp; How to Use</a> guide to get started with Hammerspoon in about 2 minutes, or check the <a href="index.html">Overview</a> to compare all options.
+    </div>
+
+    <footer>
+      <span>Repository: <a href="https://github.com/rifaterdemsahin/mac-os-screen-mover" target="_blank" rel="noopener">rifaterdemsahin/mac-os-screen-mover</a></span>
+      <span><a href="install.html">Install &amp; How to Use &rarr;</a></span>
+    </footer>
+  </div>
+</body>
+</html>

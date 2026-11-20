@@ -4,6 +4,7 @@
 
 🌐 **Live Guide & Documentation (GitHub Pages):**
 - 📖 [Overview & Options Comparison](https://rifaterdemsahin.github.io/mac-os-screen-mover/)
+- 🧠 [First Principles: Why This Exists](https://rifaterdemsahin.github.io/mac-os-screen-mover/first-principles.html)
 - 📦 [Install & How to Use Guide](https://rifaterdemsahin.github.io/mac-os-screen-mover/install.html)
 
 ## 🛠️ Implementation Options
